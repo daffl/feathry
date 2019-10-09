@@ -117,18 +117,20 @@ const application = {
       provider.call(this, protoService, location, options)
     );
 
+    this.services[location] = protoService;
+
     // If we ran setup already, set this service up explicitly
     if (this._isSetup && typeof protoService.setup === 'function') {
       debug(`Setting up service for \`${location}\``);
       protoService.setup(this, location);
     }
 
-    this.services[location] = protoService;
-
     return this;
   },
 
   setup () {
+    this._isSetup = true;
+
     // Setup each service (pass the app so that they can look up other services etc.)
     Object.keys(this.services).forEach(path => {
       const service = this.services[path];
@@ -139,8 +141,6 @@ const application = {
         service.setup(this, path);
       }
     });
-
-    this._isSetup = true;
 
     return this;
   }
