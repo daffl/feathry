@@ -32,6 +32,7 @@ const withHooks = function withHooks ({
       const hookObject = createHookObject(method, {
         type: 'before', // initial hook object type
         arguments: args,
+        exposed: returnHook,
         service,
         app
       });

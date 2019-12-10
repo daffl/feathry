@@ -117,6 +117,10 @@ declare namespace createApplication {
          * A read only property with the hook type (one of before, after or error).
          */
         readonly type: 'before' | 'after' | 'error';
+        /**
+         * A read only property that says if the method call will return the context object.
+         */
+        readonly exposed: boolean;
     }
 
     interface HookMap {

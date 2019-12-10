@@ -53,7 +53,7 @@ describe('hooks basics', () => {
     });
   });
 
-  it('has hook.app, hook.service and hook.path', () => {
+  it('has app, service, path, method, type and exposed', () => {
     const app = feathers().use('/dummy', {
       get (id) {
         return Promise.resolve({ id });
@@ -68,6 +68,9 @@ describe('hooks basics', () => {
         assert.strictEqual(hook.service, service);
         assert.strictEqual(hook.app, app);
         assert.strictEqual(hook.path, 'dummy');
+        assert.strictEqual(hook.method, 'get');
+        assert.strictEqual(hook.type, 'before');
+        assert.strictEqual(hook.exposed, false);
       }
     });
 
@@ -168,6 +171,7 @@ describe('hooks basics', () => {
         assert.strictEqual(context.service, app.service('dummy'));
         assert.strictEqual(context.type, 'after');
         assert.strictEqual(context.path, 'dummy');
+        assert.strictEqual(context.exposed, true);
         assert.deepStrictEqual(context.result, {
           id: 10,
           params: {}
@@ -186,6 +190,7 @@ describe('hooks basics', () => {
         assert.strictEqual(context.service, app.service('dummy'));
         assert.strictEqual(context.type, 'error');
         assert.strictEqual(context.path, 'dummy');
+        assert.strictEqual(context.exposed, true);
         assert.strictEqual(context.error.message, 'Something went wrong');
       });
     });
@@ -201,6 +206,7 @@ describe('hooks basics', () => {
         assert.strictEqual(context.service, app.service('dummy'));
         assert.strictEqual(context.type, 'error');
         assert.strictEqual(context.path, 'dummy');
+        assert.strictEqual(context.exposed, true);
         assert.strictEqual(context.error.message, 'An id must be provided to the \'dummy.get\' method');
       });
     });
@@ -224,6 +230,7 @@ describe('hooks basics', () => {
         assert.strictEqual(context.service, app.service('dummy'));
         assert.strictEqual(context.type, 'error');
         assert.strictEqual(context.path, 'dummy');
+        assert.strictEqual(context.exposed, true);
         assert.strictEqual(context.error.message, 'Error in error hook');
       });
     });
